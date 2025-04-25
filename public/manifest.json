@@ -1,0 +1,22 @@
+{
+  "name": "Slalom Pass Tracker",
+  "short_name": "SlalomTracker",
+  "description": "Log and review water ski slalom passes",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0ea5e9",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/assets/Metamarine%20Wave%20Sm%2096.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/Metamarine%20Wave%20Sm%20600.png",
+      "sizes": "600x600",
+      "type": "image/png"
+    }
+  ]
+}
