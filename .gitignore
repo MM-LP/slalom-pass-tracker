@@ -1,0 +1,14 @@
+# Ignore environment secrets
+.env
+
+# Node.js
+node_modules
+dist
+build
+
+# System files
+.DS_Store
+*.log
+
+# Vite
+.vite
