@@ -1,4 +1,5 @@
 // App.jsx – Main Router and Layout
+
 import { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
@@ -8,42 +9,50 @@ import './index.css';
 const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
-//test
-useEffect(() => {
-  console.log('API_URL', API_URL);
-  console.log('User ID', user?.id);
-  console.log('JWT Token', token);
-
-  if (user && token) {
-    fetch(`${API_URL}/api/stats/${user.id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-  }
-}, [user, token]);
-//
-
-
-if (!API_URL) {
-  console.error("VITE_BACKEND_URL is not set in environment variables.");
-}
-
-await fetch(`${API_URL}/api/stats/${user.id}`, {
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
-});
-
-
 export default function App() {
   const [session, setSession] = useState(null);
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => setSession(data.session));
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => setSession(session));
+    if (!API_URL) {
+      console.error("VITE_BACKEND_URL is not set in environment variables.");
+    }
+  }, []);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session);
+      setUser(data.session?.user || null);
+      setToken(data.session?.access_token || null);
+    });
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      setUser(session?.user || null);
+      setToken(session?.access_token || null);
+    });
     return () => listener?.subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (user && token) {
+      console.log('API_URL', API_URL);
+      console.log('User ID', user.id);
+      console.log('JWT Token', token);
+
+      fetch(`${API_URL}/api/stats/${user.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => {
+          console.log('Fetch Status:', res.status);
+          return res.json();
+        })
+        .then(data => console.log('Fetched stats:', data))
+        .catch(err => console.error('Fetch error:', err));
+    }
+  }, [user, token]);
 
   return (
     <Router>
