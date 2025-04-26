@@ -8,6 +8,10 @@ import './index.css';
 const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
+if (!API_URL) {
+  console.error("VITE_BACKEND_URL is not set in environment variables.");
+}
+
 await fetch(`${API_URL}/api/stats/${user.id}`, {
   headers: {
     Authorization: `Bearer ${token}`
