@@ -10,7 +10,7 @@ import UserPreferences from './components/UserPreferences.jsx';
 import NewSet from './components/NewSet.jsx';
 import Login from './components/Login.jsx';
 import Signup from './components/Signup.jsx';
-<q></q>
+
 
 const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
 const API_URL = import.meta.env.VITE_BACKEND_URL;
