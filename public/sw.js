@@ -1,6 +1,6 @@
 // sw.js - Service Worker for basic PWA support
 
-const CACHE_NAME = 'slalom-pass-cache-v1';
+const CACHE_NAME = 'slalom-pass-cache-v2';
 const urlsToCache = [
   '/',
   '/index.html',
