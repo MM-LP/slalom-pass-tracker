@@ -8,13 +8,26 @@ import './index.css';
 const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
+//test
+useEffect(() => {
+  console.log('API_URL', API_URL);
+  console.log('User ID', user?.id);
+  console.log('JWT Token', token);
+
+  if (user && token) {
+    fetch(`${API_URL}/api/stats/${user.id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+}, [user, token]);
+//
+
+
 if (!API_URL) {
   console.error("VITE_BACKEND_URL is not set in environment variables.");
 }
-console.log('API_URL:', API_URL);
-console.log('User ID:', user?.id);
-console.log('JWT Token:', token);
-
 
 await fetch(`${API_URL}/api/stats/${user.id}`, {
   headers: {
