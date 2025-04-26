@@ -6,7 +6,7 @@ import logo from './assets/Metamarine Wave Sm 96.png';
 import './index.css';
 
 const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
-const API_URL = import.meta.env.VITE_BACKEND_URL;
+const API_URL = import.meta.env.https://slalom-pass-api.vercel.app/;
 
 await fetch(`${API_URL}/api/stats/${user.id}`, {
   headers: {
