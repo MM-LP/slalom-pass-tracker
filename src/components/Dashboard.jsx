@@ -1,28 +1,35 @@
-// components/Dashboard.jsx
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import WelcomeBack from './WelcomeBack.jsx'; // 🆕
 
 export default function Dashboard({ user }) {
-  const [stats, setStats] = useState(null);
+  const navigate = useNavigate();
+  const [profileLoaded, setProfileLoaded] = useState(false);
 
   useEffect(() => {
-    const fetchStats = async () => {
-      const token = (await supabase.auth.getSession()).data.session.access_token;
-      const res = await fetch(`/api/stats/${user.id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
-      setStats(data);
-    };
-    fetchStats();
-  }, [user]);
+    async function checkUserProfile() {
+      const { data, error } = await supabase
+        .from('users')
+        .select('default_speed, default_rope_length')
+        .eq('id', user.id)
+        .single();
 
-  return stats ? (
-    <div className="space-y-4">
-      <h2 className="text-xl font-semibold">Weekly Sets</h2>
-      <ul>{stats.weeklySets.map((w, i) => <li key={i}>{w.week.slice(0,10)}: {w.sets} sets</li>)}</ul>
-      <h2 className="text-xl font-semibold mt-6">Average Balls by Rope</h2>
-      <ul>{stats.avgBallsByRope.map((r, i) => <li key={i}>{r.rope_length}m: {parseFloat(r.avg_balls).toFixed(2)}</li>)}</ul>
-    </div>
-  ) : <p>Loading stats...</p>;
+      if (!error && data) {
+        if (!data.default_speed || !data.default_rope_length) {
+          navigate('/settings'); // 🔥 Redirect if missing info
+        } else {
+          setProfileLoaded(true); // Show welcome
+        }
+      }
+    }
+
+    if (user) {
+      checkUserProfile();
+    }
+  }, [user, navigate]);
+
+  if (!profileLoaded) return null; // prevent flashing wrong page
+
+  return <WelcomeBack user={user} />;
 }

@@ -9,12 +9,12 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/assets/Metamarine%20Wave%20Sm%2096.png",
+      "src": "src/assets/Metamarine%20Wave%20Sm%2096.png",
       "sizes": "96x96",
       "type": "image/png"
     },
     {
-      "src": "/assets/Metamarine%20Wave%20Sm%20600.png",
+      "src": "src/assets/Metamarine%20Wave%20Sm%20600.png",
       "sizes": "600x600",
       "type": "image/png"
     }
